@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { date } from 'drizzle-orm/mysql-core';
 
 interface Goose {
   name: string;
@@ -28,8 +29,9 @@ interface WetlandWager {
 
 }
 
-interface Races {
+interface Race {
   name: string;
+  type: string;
 
 }
 
@@ -69,11 +71,26 @@ const seedWetlandersData: WetlandWager[]=[
 
 ]
 
+const seedRaceData: Race[] =[
+  {
+    name: 'Flock Formation Style',
+    type: 'formation'
+  },
+  {name: 'Paddle Power Sprint',
+    type: 'speed swimming',
+  }, 
+  {
+    name: 'Far-Flight Flying Cup',
+    type:'long distance flight'
+  }
+]
+
 
 const seedDatabase = async () => {
   const seedData = [
     { endpoint: 'http://localhost:8787/api/geese', data: seedGeeseData },
     { endpoint: 'http://localhost:8787/api/wetlandwagers', data: seedWetlandersData },
+    { endpoint:'http://localhost:8787/api/races', data: seedRaceData}
   ];
 
   for (const { endpoint, data } of seedData) {

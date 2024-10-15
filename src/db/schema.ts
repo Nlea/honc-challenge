@@ -24,7 +24,7 @@ export const wetlandWagers = sqliteTable("wetlandWagers", {
   name: text("name").notNull(),
   kind: text("kind"). notNull(),
   characteristics: text("characteristics"),
-  breadcrumbsWallet: integer("breadcrumbs", {mode: "number"}),
+  breadcrumbsWallet: integer("breadcrumbs", {mode: "number"}).notNull(),
   favouriteCocktail: text("favouriteCocktail"),
   favouriteSnack : text("favouriteSnack"),
   luck: integer("luck", {mode: "number"}) 
@@ -42,7 +42,7 @@ export const bets = sqliteTable ("bets",{
   id: integer("id", {mode: "number"}).primaryKey(),
   wetlandWagerId: integer("wetlandWagerId", {mode: "number"}).references(() => wetlandWagers.id),
   raceId: integer("raceId", {mode: "number"}).references(()=> races.id),
-  winner: integer("winnerId", {mode: "number"}).references(()=> geese.id),
+  goose: integer("gooseId", {mode: "number"}).references(()=> geese.id),
   amount: integer("amount", { mode:"number"})
 });
 

@@ -2,18 +2,18 @@
 
 This is a project created with the `create-honc-app` d1 template. It contains some flaws and errors. 
 
-The API: yearly geese race day. Everyone at the lake is super excited. 
+## The API / story
+Every 4 years it is Gooselympics. Everyone at the lake is super excited. this year the games will take place at lake Tahoe. Geese from all over the globe are travelling to compete in speed swimming, formation style and long distance flying. 
 
-Start the application and a next terminal start Fibperlane to get information from the race day and also identify flaws and erros. 
+At the lake the wetlandwagers get exited to make bets for their favourite goose and also hope to win breadcrumbs for theit wallet. 
+
+
+Start the application and in a new terminal start Fibperlane studio. Fiberplane sudio will make it easy for you to answer the questions in the Google form and it should't take long.
 
 Anser the question from the form: 
 
-- Who is participating in the 500 m swim race?
-- Without cheating: Which goose is faster? 
-
-
-## Getting started
-[D1](https://developers.cloudflare.com/d1/) is Cloudflare's serverless SQL database. Running HONC with a D1 database involves two key steps: first, setting up the project locally, and second, deploying it in production. You can spin up your D1 database locally using Wrangler. If you're planning to deploy your application for production use, ensure that you have created a D1 instance in your Cloudflare account.
+- How many Database calls are made when calling the "xxx" endpoint ? 
+- 
 
 ## Project structure
 
@@ -33,7 +33,7 @@ Anser the question from the form:
 
 ## Commands for local development
 
-Run the migrations and (optionally) seed the database:
+Run the migrations and seed the database:
 
 ```sh
 npm run db:touch
@@ -49,7 +49,7 @@ npm run dev
 Once the application runs you can seed the database with the client script
 
 ```sh
-npm run client
+npm run db:seed
 ```
 
 ## To Does 
@@ -67,34 +67,7 @@ npm run client
 - GET /cocktail query parameters ?goose=Barnie
 - POST/ cheat (if successfull +1 added to goose speed, if not successfull -2 added to goose speed)
 
-Goose table
--name
--kind
--favourit lake
--hobby
--favourit cocktail
--speed
 
-Race table
-- race type
-- participants
-
-Bet table
-- user (lake animal)
-- goose
-- race type
-- amount (breadcrumbs)
-
-Lake animals tables
-- name
-- kind (frog, duck, otter, beaver, swan, crow)
-- favourite goose
-- 
-
-
-
-
-You can now visit the worker’s address and access the API. If you wish, you can update the endpoint in the `client.ts` file to point to your deployed worker's address and run the script with `npm run client` to populate the D1 database in production.
 
 Learn more about the HONC stack on the [website](https://honc.dev) or the main [repo](https://github.com/fiberplane/create-honc-app).
 

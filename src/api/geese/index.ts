@@ -3,36 +3,30 @@ import type { HonoEnv } from "../../types";
 import { drizzle } from 'drizzle-orm/d1';
 import { eq } from 'drizzle-orm';
 import * as schema from '../../db'
-
+import { verifyGooseMiddleware} from "../../middleware"
+import { Goose } from "../../types";
 
 const geese = new Hono<HonoEnv>();
+declare module 'hono' {
+    interface ContextVariableMap {
+      goose: Goose
+    }
+  }
+
+geese.use("/:id/*", verifyGooseMiddleware)
 
 geese.get("/", async (c) => {
     const db = drizzle(c.env.DB);
     const geese = await db.select().from(schema.geese);
-    console.log(Object.getPrototypeOf(c.env.DB).constructor.name)
     return c.json({geese})
   })
 
-
   geese.get("/:id", async (c) => {
-    const id = c.req.param('id');
-
-    const db = drizzle(c.env.DB);
-    const goose = (await db.select().from(schema.geese).where(eq(schema.geese.id, +id)))?.[0];
-
-  if (!goose) {
-    return c.json({ message: 'Goose not found' }, 404);
-  }
-    return c.json({goose})
+  const goose = c.get('goose')  
+  return c.json(goose)
   })
 
   geese.post("/:id/train", async (c) =>{
-    const id = c.req.param('id');
-    const db = drizzle(c.env.DB)
-    //const {trainingsfocus} = await c.req.json()
-    //console.log(trainingsfocus)
-
     const { trainingsfocus } = await c.req.json() as { trainingsfocus: keyof typeof schema.geese };
     if (trainingsfocus !== "speed" && 
         trainingsfocus !== "style" && 
@@ -41,67 +35,55 @@ geese.get("/", async (c) => {
         return c.text("Sorry, this training focus doesn't exist. Valid training focuses are speed, style, precision, or efficiency.")
     }
 
-
-
-    try{
-        const [goose] = (await db.select().from(schema.geese).where(eq(schema.geese.id, +id)))
-        if(!goose){
-            return c.text("There is no Id matching the challenger goose")
-        }
-
-        const energyLevel = goose?.energyLevel
+    const goose = c.get('goose')
+    const energyLevel = goose?.energyLevel
         const newEngeryLevel = energyLevel -3
+        const newLevel = goose?.[trainingsfocus] + 0.5
 
         if(energyLevel < 1){
             return c.text("Sorry the goose has not enough energy left for training")
         }
 
-
-        await db.update(schema.geese).set({energyLevel: goose?.energyLevel-3, [trainingsfocus]: goose?.[trainingsfocus] + 0.5}).where(eq(schema.geese.id, +id))
-        return c.text("Training done, new energy level is  " + newEngeryLevel + "New " + [trainingsfocus] + " value: " + goose?.[trainingsfocus])
-
-
+        try{
+        const db = drizzle(c.env.DB)
+        await db.update(schema.geese).set({energyLevel: goose?.energyLevel-3, [trainingsfocus]: goose?.[trainingsfocus] + 0.5}).where(eq(schema.geese.id, +goose.id))
+        return c.text("Training done, new energy level is  " + newEngeryLevel + " New " + [trainingsfocus] + " value: " + newLevel)
 
     }catch{
 
     }
 
-
 })
 
 
 geese.post("/:id/speed-challenge", async (c) => {
-    const id = c.req.param('id');
     const { opponentId } = await c.req.json();
-
     const db = drizzle(c.env.DB)
 
     try{
-        const [challengerGoose] = (await db.select().from(schema.geese).where(eq(schema.geese.id, +id)))
         const [opponentGoose] = (await db.select().from(schema.geese).where(eq(schema.geese.id, + opponentId)))
-
-        if(!challengerGoose){
-            return c.text("There is no Id matching the challenger goose")
-        }
-
         if(!opponentGoose){
             return c.text("There is no Id matching the opponentGoose")
         }
 
+        const challengerGoose = c.get('goose') 
         const challengersSpeed = challengerGoose?.speed
         const opponentSpeed = opponentGoose?.speed
 
     let winner;
+    let newEngeryLevel;
+    let newSpeedLevel
         
     if(challengersSpeed > opponentSpeed){
         winner = challengerGoose?.name
-        const newEngeryLevel = challengerGoose?.energyLevel -2
-        const newSpeedLevel = challengerGoose?.speed + 0.7
+        newEngeryLevel = challengerGoose?.energyLevel -2
+        newSpeedLevel = challengerGoose?.speed + 0.7
     }else{
         winner = opponentGoose?.name
-        const newEngeryLevel = challengerGoose?.energyLevel -4
-        const newSpeedLevel = challengerGoose?.speed -0.7
+        newEngeryLevel = challengerGoose?.energyLevel -4
+        newSpeedLevel = challengerGoose?.speed -0.7
     }
+    db.update(schema.geese).set({energyLevel: newEngeryLevel, speed: newSpeedLevel}).where(eq(schema.geese.id, + challengerGoose.id))
 
     return c.text("The winner is: "+ winner);
 
@@ -112,7 +94,6 @@ geese.post("/:id/speed-challenge", async (c) => {
     }
 
 })
-
 
 geese.post('/', async (c) => {
     const db = drizzle(c.env.DB);
