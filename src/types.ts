@@ -1,5 +1,3 @@
-import type * as schema from "./db";
-import { DrizzleD1Database } from 'drizzle-orm/d1';
 
 type Bindings = {
     //DB: DrizzleD1Database
@@ -28,5 +26,35 @@ export interface Goose {
 }
 
 
-//export type Db = DrizzleD1Database<typeof schema>;
-//export type Db = D1Database<typeof schema>;
+
+export enum performanceindicatorEnum{
+  Speed = "speed",
+  Precision = "precision",
+  Efficiency = "efficiency",
+  Style = "style"
+}
+
+export interface WetlandWager {
+  id: number;
+  name: string;
+  kind: string;
+  characteristics: string;
+  breadcrumbsWallet: number;
+  favouriteCocktail: string;
+  favouriteSnack: string;
+  luck: number
+
+}
+
+export enum raceTypesEnum {
+  Formation = 'formation',
+  SpeedSwimming = 'speed swimming',
+  LongDistanceFlight = 'long distance flight',
+}
+
+export interface Race {
+  id: number;
+  name: string;
+  type: raceTypesEnum;
+  winner: string
+}

@@ -5,6 +5,7 @@ import { eq } from 'drizzle-orm';
 import * as schema from '../../db'
 import { verifyGooseMiddleware} from "../../middleware"
 import { Goose } from "../../types";
+import { performanceindicatorEnum } from "../../types";
 
 const geese = new Hono<HonoEnv>();
 declare module 'hono' {
@@ -27,18 +28,22 @@ geese.get("/", async (c) => {
   })
 
   geese.post("/:id/train", async (c) =>{
-    const { trainingsfocus } = await c.req.json() as { trainingsfocus: keyof typeof schema.geese };
-    if (trainingsfocus !== "speed" && 
-        trainingsfocus !== "style" && 
-        trainingsfocus !== "precision" && 
-        trainingsfocus !== "efficiency") {
-        return c.text("Sorry, this training focus doesn't exist. Valid training focuses are speed, style, precision, or efficiency.")
+    const { performanceindicator } = await c.req.json() as { performanceindicator: keyof typeof schema.geese };
+    if (performanceindicator !== "speed" && 
+        performanceindicator !== "style" && 
+        performanceindicator !== "precision" && 
+        performanceindicator !== "efficiency"
+
+    ) {
+            
+        return c.text("Sorry, this performance indicator doesn't exist. Valid training focuses are speed, style, precision, or efficiency.", 404)
     }
 
-    const goose = c.get('goose')
-    const energyLevel = goose?.energyLevel
+    //const goose = c.get('goose')
+    const goose = c.get('goose');
+    const energyLevel = goose?.energyLevel ?? 0
         const newEngeryLevel = energyLevel -3
-        const newLevel = goose?.[trainingsfocus] + 0.5
+        const newLevel = goose?.[performanceindicator] + 0.5
 
         if(energyLevel < 1){
             return c.text("Sorry the goose has not enough energy left for training")
@@ -46,11 +51,12 @@ geese.get("/", async (c) => {
 
         try{
         const db = drizzle(c.env.DB)
-        await db.update(schema.geese).set({energyLevel: goose?.energyLevel-3, [trainingsfocus]: goose?.[trainingsfocus] + 0.5}).where(eq(schema.geese.id, +goose.id))
-        return c.text("Training done, new energy level is  " + newEngeryLevel + " New " + [trainingsfocus] + " value: " + newLevel)
+        await db.update(schema.geese).set({energyLevel: goose.energyLevel-3, [performanceindicator]: goose?.[performanceindicator] + 0.5}).where(eq(schema.geese.id, +goose.id))
+        return c.text("Training done, new energy level is  " + newEngeryLevel + " New " + [performanceindicator] + " value: " + newLevel)
 
-    }catch{
-
+    }catch(e){
+        console.error(e)
+        return c.text("An error occured while training: " + e)
     }
 
 })

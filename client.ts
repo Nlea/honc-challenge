@@ -21,7 +21,7 @@ interface Goose {
 interface WetlandWager {
   name: string;
   kind: string;
-  character: string;
+  characteristics: string;
   breadcrumbsWallet: number;
   luck: number;
   favouriteCocktail: string;
@@ -46,23 +46,23 @@ const seedGeeseData: Goose[] = [
 const seedWetlandersData: WetlandWager[]=[
   {
     name: 'Skip', kind: 'Nothern water snake',
-    character: ' Industrious and strategic, always tweaking her bets for maximum payout',
+    characteristics: ' Industrious and strategic, always tweaking her bets for maximum payout',
     breadcrumbsWallet: 75000,
-    luck: 7,
+    luck: 5,
     favouriteCocktail: 'Maple Mudslide',
     favouriteSnack: 'Cheddar Cheese Crackers'
   },
   {
     name: 'Ollie', kind: 'River otter',
-    character: ' Playful and fun-loving, Ollie makes bets for the thrill and excitement',
+    characteristics: ' Playful and fun-loving, Ollie makes bets for the thrill and excitement',
     breadcrumbsWallet: 52000,
-    luck: 9,
+    luck: 7,
     favouriteCocktail: 'Otter pop fizz',
     favouriteSnack: 'Corn Dogs'
   },
   {
     name: 'Gertie', kind: 'Common snapping turtle',
-    character: 'Slow, steady, and methodical, waiting for the perfect moment to place her bets',
+    characteristics: 'Slow, steady, and methodical, waiting for the perfect moment to place her bets',
     breadcrumbsWallet: 68500,
     luck: 6,
     favouriteCocktail: 'Swampy sour',

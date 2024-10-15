@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 
 
 
-export const verifyWetlanderMiddleware = createMiddleware(async (c, next) => {
+export const verifyRaceMiddleware = createMiddleware(async (c, next) => {
   const idParam = c.req.param('id')
   if (idParam === undefined) {
     return c.text('ID is required.');
@@ -14,17 +14,17 @@ export const verifyWetlanderMiddleware = createMiddleware(async (c, next) => {
   const id: number = Number(idParam);
 
   if (isNaN(id) || id <= 0) {
-    return c.text('Invalid ID. It must be a positive number.');
+    return c.text('Invalid ID. It must be a positive number.', 400);
   }
 
   const db = drizzle(c.env.DB);
-  const wetlandWager = (await db.select().from(schema.wetlandWagers).where(eq(schema.wetlandWagers.id, + id)).limit(1))[0];
+  const race = (await db.select().from(schema.races).where(eq(schema.races.id, + id)).limit(1))[0];
 
-  if (!wetlandWager) {
-    return c.json({ message: 'Wetland wager not found' }, 404);
+  if (!race) {
+    return c.json({ message: 'Goose not found' }, 404);
   }
 
-  c.set('wetlandwager', wetlandWager)
+  c.set('race', race)
 
   await next()
 })

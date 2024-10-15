@@ -1,5 +1,5 @@
 import {sql} from "drizzle-orm";
-import { integer, sqliteTable, text, real } from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, text, real, unique } from 'drizzle-orm/sqlite-core';
 
 export const geese = sqliteTable("geese", {
   id: integer("id", { mode: "number" }).primaryKey(),
@@ -29,14 +29,20 @@ export const wetlandWagers = sqliteTable("wetlandWagers", {
   favouriteSnack : text("favouriteSnack"),
   luck: integer("luck", {mode: "number"}) 
 
-});
+} , (t) => ({
+  unq: unique().on(t.id, t.name),
+  unq2: unique('custom_name').on(t.id, t.name)
+})
+
+);
 
 export const races = sqliteTable("races", {
   id: integer("id", {mode: "number"}).primaryKey(),
   name: text("name"),
-  type: text("type"),
+  type : text("type") , 
   winner: integer("gooseId", {mode:"number"}).references(() => geese.id)
 }); 
+
 
 export const bets = sqliteTable ("bets",{
   id: integer("id", {mode: "number"}).primaryKey(),
@@ -45,14 +51,3 @@ export const bets = sqliteTable ("bets",{
   goose: integer("gooseId", {mode: "number"}).references(()=> geese.id),
   amount: integer("amount", { mode:"number"})
 });
-
-
-// Defining relationships
-
-/* export const raceParticipants = sqliteTable("participants", {
-})
-
-export const raceBets = sqliteTable("raceBets",{
-
-}
-) */

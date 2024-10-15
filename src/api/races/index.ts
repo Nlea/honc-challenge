@@ -1,11 +1,18 @@
 import { type Context, Hono } from "hono";
-import type { HonoEnv } from "../../types";
+import { HonoEnv, performanceindicatorEnum } from "../../types";
 import { drizzle } from 'drizzle-orm/d1';
-import { eq } from 'drizzle-orm';
 import * as schema from '../../db'
-
+import { verifyRaceMiddleware } from "../../middleware";
+import { Race, raceTypesEnum } from "../../types";
 
 const races = new Hono<HonoEnv>();
+declare module 'hono' {
+  interface ContextVariableMap {
+    race: Race
+  }
+}
+
+races.use("/:id/*", verifyRaceMiddleware)
 
 races.get("/", async (c) => {
     const db = drizzle(c.env.DB);
@@ -25,7 +32,30 @@ races.post("/", async (c) =>{
 })
 
 races.post("/:id/start", async (c) =>{
+  const race = c.get('race') 
+  
 const {goose1, goose2, goose3 } = await c.req.json();
+
+let performanceindicator: performanceindicatorEnum[]
+
+if(race.type === raceTypesEnum.Formation){
+  performanceindicator = [performanceindicatorEnum.Style, performanceindicatorEnum.Efficiency, performanceindicatorEnum.Precision]
+
+  
+
+}
+
+if(race.type === raceTypesEnum.LongDistanceFlight){
+  performanceindicator =[performanceindicatorEnum.Efficiency, performanceindicatorEnum.Speed, performanceindicatorEnum.Precision]
+
+}
+
+if(race.type === raceTypesEnum.SpeedSwimming){
+  performanceindicator = [performanceindicatorEnum.Speed, performanceindicatorEnum.Style, performanceindicatorEnum.Precision]
+
+}else{
+  return c.text("Sorry this type of a race does not exist in the international Gooselympics", 404)
+}
 
 })
 
