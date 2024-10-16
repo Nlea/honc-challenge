@@ -16,13 +16,11 @@ export const verifyWetlanderMiddleware = createMiddleware(async (c, next) => {
 	}
 
 	const db = drizzle(c.env.DB);
-	const [wetlandWager] = (
-		await db
-			.select()
-			.from(schema.wetlandWagers)
-			.where(eq(schema.wetlandWagers.id, +id))
-			.limit(1)
-	);
+	const [wetlandWager] = await db
+		.select()
+		.from(schema.wetlandWagers)
+		.where(eq(schema.wetlandWagers.id, +id))
+		.limit(1);
 
 	if (!wetlandWager) {
 		return c.json({ message: "Wetland wager not found" }, 404);

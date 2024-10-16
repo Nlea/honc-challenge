@@ -20,13 +20,11 @@ export const verifyRaceMiddleware = createMiddleware(async (c, next) => {
 	}
 
 	const db = drizzle(c.env.DB);
-	const [race] = (
-		await db
-			.select()
-			.from(schema.races)
-			.where(eq(schema.races.id, +id))
-			.limit(1)
-	);
+	const [race] = await db
+		.select()
+		.from(schema.races)
+		.where(eq(schema.races.id, +id))
+		.limit(1);
 
 	if (!race) {
 		return c.json({ message: "Race not found" }, 404);
@@ -59,13 +57,11 @@ export const verifyRaceMiddleware = createMiddleware(async (c, next) => {
 
 		const db = drizzle(c.env.DB);
 
-		const [goose] = (
-			await db
-				.select()
-				.from(schema.geese)
-				.where(eq(schema.geese.id, gooseId))
-				.limit(1)
-		);
+		const [goose] = await db
+			.select()
+			.from(schema.geese)
+			.where(eq(schema.geese.id, gooseId))
+			.limit(1);
 
 		if (!goose) {
 			return c.json({ message: "Goose not found" }, 404);

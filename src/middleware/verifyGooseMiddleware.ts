@@ -16,13 +16,11 @@ export const verifyGooseMiddleware = createMiddleware(async (c, next) => {
 	}
 
 	const db = drizzle(c.env.DB);
-	const [goose] = (
-		await db
-			.select()
-			.from(schema.geese)
-			.where(eq(schema.geese.id, +id))
-			.limit(1)
-	);
+	const [goose] = await db
+		.select()
+		.from(schema.geese)
+		.where(eq(schema.geese.id, +id))
+		.limit(1);
 
 	if (!goose) {
 		return c.json({ message: "Goose not found" }, 200);

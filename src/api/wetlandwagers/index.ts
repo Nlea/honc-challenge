@@ -151,8 +151,8 @@ wetlandwagers.post("/:id/cheat", async (c) => {
 			return c.text("There is no goose matching the id", 404);
 		}
 
-		const successThreashold = 100 - 10 * wetlanderwager.luck;
-		console.log(`success threashold: ${successThreashold}`);
+		const successThreshold = 100 - 10 * wetlanderwager.luck;
+		console.log(`success threshold: ${successThreshold}`);
 
 		const randomnumberapi = await fetch(
 			"http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100&count=1",
@@ -165,7 +165,7 @@ wetlandwagers.post("/:id/cheat", async (c) => {
 		const randomNumber = (await randomnumberapi.json()) as number[];
 		console.log(`random number: ${randomNumber}`);
 
-		if (randomNumber[0] < successThreashold) {
+		if (randomNumber[0] < successThreshold) {
 			db.update(schema.wetlandWagers)
 				.set({ breadcrumbsWallet: wetlanderwager.breadcrumbsWallet - 10000 })
 				.where(eq(schema.wetlandWagers.id, +wetlanderwager.id));

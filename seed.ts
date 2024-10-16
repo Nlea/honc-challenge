@@ -5,7 +5,6 @@ import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./src/db/schema";
 import type { NewGoose, NewWetlandWager, NewRace } from "./src/db/schema";
 
-
 const seedGeeseData: NewGoose[] = [
 	{
 		name: "Gordon",
