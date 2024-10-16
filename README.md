@@ -44,9 +44,8 @@ Use this form to submit your answers.  and more details on the questions. The ch
 **Welcome to the Gooselympics!** :tada: You are now part of the games and have some control at your fingertips to gather information and influence the competition.
 
 ## Questions 
-To participate in the challenge, please fill out this [Google Form](Everyone who can answer 7 questions right, wins a 35 amazon voucher. 
 
-Use this [form](https://forms.gle/HLzabiZcAJqf9T8t8) to submit your answers). The questions are outlined below to make it easier to provide useful code snippets.
+Use this [form](https://forms.gle/HLzabiZcAJqf9T8t8) to submit your answers. The questions are outlined below to make it easier to provide useful code snippets.
 
 ### All about the geese
 ![Pippa](/img/pippa.png)
