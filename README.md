@@ -6,9 +6,11 @@ Every four years, geese from around the world gather to compete in various event
 
 The following API represents part of the Gooselympics logic! It’s far from perfect, but that’s not important for participating in our coding challenge.
 
-!
 
 This project was created using the `create-honc-app` d1 template. You can learn more about the HONC stack on the [website](https://honc.dev) or the main [repo](https://github.com/fiberplane/create-honc-app).
+
+Visit [Fiberplane's docs](https://fiberplane.com/docs/get-started/) for more information on Fiberplane studio and the client library. 
+
 
 ## How to win
 - get 7 answers right
