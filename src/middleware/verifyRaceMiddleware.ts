@@ -7,9 +7,9 @@ import { raceTypesEnum, type Race, type Goose } from "../types";
 export const verifyRaceMiddleware = createMiddleware(async (c, next) => {
 	const idParam = c.req.param("id");
 	const { goose1, goose2, goose3 } = await c.req.json();
-	const arr_geeseId: number[] = [goose1, goose2, goose3];
+	const geeseIds: number[] = [goose1, goose2, goose3];
 
-	if (idParam === undefined) {
+	if (!idParam) {
 		return c.text("ID is required.");
 	}
 
@@ -20,61 +20,61 @@ export const verifyRaceMiddleware = createMiddleware(async (c, next) => {
 	}
 
 	const db = drizzle(c.env.DB);
-	const raceDb = (
+	const [race] = (
 		await db
 			.select()
 			.from(schema.races)
 			.where(eq(schema.races.id, +id))
 			.limit(1)
-	)[0];
+	);
 
-	if (!raceDb) {
+	if (!race) {
 		return c.json({ message: "Race not found" }, 404);
 	}
 
-	const race: Race = {
-		id: raceDb.id,
-		name: raceDb.name,
+	const validatedRace: Race = {
+		id: race.id,
+		name: race.name,
 		type:
-			raceDb.type &&
-			Object.values(raceTypesEnum).includes(raceDb.type as raceTypesEnum)
-				? (raceDb.type as raceTypesEnum)
+			race.type &&
+			Object.values(raceTypesEnum).includes(race.type as raceTypesEnum)
+				? (race.type as raceTypesEnum)
 				: null, // Set to null if it's not a valid race type
-		winner: raceDb.winner,
+		winner: race.winner,
 	};
 
-	c.set("race", race);
+	c.set("race", validatedRace);
 
-	const arr_geese: Goose[] = [];
+	const geese: Goose[] = [];
 
-	for (const value of arr_geeseId) {
-		if (value === undefined) {
+	for (let gooseId of geeseIds) {
+		if (!gooseId) {
 			return c.text("ID is required.");
 		}
 
-		const gooseId = Number(value);
+		gooseId = Number(gooseId);
 		if (Number.isNaN(gooseId) || gooseId <= 0) {
 			return c.text("Invalid ID. It must be a positive number.");
 		}
 
 		const db = drizzle(c.env.DB);
 
-		const goose = (
+		const [goose] = (
 			await db
 				.select()
 				.from(schema.geese)
 				.where(eq(schema.geese.id, gooseId))
 				.limit(1)
-		)[0];
+		);
 
 		if (!goose) {
 			return c.json({ message: "Goose not found" }, 404);
 		}
 
-		arr_geese.push(goose);
+		geese.push(goose);
 	}
 
-	c.set("geese", arr_geese);
+	c.set("geese", geese);
 
 	await next();
 });

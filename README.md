@@ -13,9 +13,9 @@ Visit [Fiberplane's docs](https://fiberplane.com/docs/get-started/) for more inf
 
 
 ## How to win
-- get 7 answers right
-- price: **35 $ Voucher**
-- Refer to the README for setup instructions
+- Get 7 answers right
+- Prize: **$35 Voucher**
+- Refer to this `README` for setup instructions
 - Use this [form](https://forms.gle/HLzabiZcAJqf9T8t8) to submit your answers
 - Deadline: **November 30th, 2024**
 
@@ -25,13 +25,15 @@ Use this form to submit your answers.  and more details on the questions. The ch
 ## Setting up the challenge
 1. Clone this repo
 1. Navigate to the repo and open a terminal
+1. Install dependencies
+  - `npm install`
 1. Set up and seed the database, by running those commands
   - `npm run db:setup`
 1. Run the project locally
   - `npm run dev`
-1. Use the same terminal to start Fiberplane studio
+1. Use another terminal window to start Fiberplane studio in the project root
   - `npx @fiberplane/studio@latest`
-1. Fiberplane studio now is running: Navigate to http://localhost:8788
+1. Fiberplane studio now is running! Navigate to http://localhost:8788
 
     You should see something like this: 
 
@@ -44,7 +46,7 @@ Use this form to submit your answers.  and more details on the questions. The ch
 Use this [form](https://forms.gle/HLzabiZcAJqf9T8t8) to submit your answers. The questions are outlined below to make it easier to provide useful code snippets.
 
 ### All about the geese
-![Pippa](/img/pippa.png)
+![Pippa](/img/featured-goose.png)
 
 1. **Which of the Geese is featured in the picture above?** 
 

@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 
 export const verifyWetlanderMiddleware = createMiddleware(async (c, next) => {
 	const idParam = c.req.param("id");
-	if (idParam === undefined) {
+	if (!idParam) {
 		return c.text("ID is required.");
 	}
 
@@ -16,13 +16,13 @@ export const verifyWetlanderMiddleware = createMiddleware(async (c, next) => {
 	}
 
 	const db = drizzle(c.env.DB);
-	const wetlandWager = (
+	const [wetlandWager] = (
 		await db
 			.select()
 			.from(schema.wetlandWagers)
 			.where(eq(schema.wetlandWagers.id, +id))
 			.limit(1)
-	)[0];
+	);
 
 	if (!wetlandWager) {
 		return c.json({ message: "Wetland wager not found" }, 404);

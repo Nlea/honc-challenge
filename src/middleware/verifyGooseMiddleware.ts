@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 
 export const verifyGooseMiddleware = createMiddleware(async (c, next) => {
 	const idParam = c.req.param("id");
-	if (idParam === undefined) {
+	if (!idParam) {
 		return c.text("ID is required.", 400);
 	}
 
@@ -16,13 +16,13 @@ export const verifyGooseMiddleware = createMiddleware(async (c, next) => {
 	}
 
 	const db = drizzle(c.env.DB);
-	const goose = (
+	const [goose] = (
 		await db
 			.select()
 			.from(schema.geese)
 			.where(eq(schema.geese.id, +id))
 			.limit(1)
-	)[0];
+	);
 
 	if (!goose) {
 		return c.json({ message: "Goose not found" }, 200);
