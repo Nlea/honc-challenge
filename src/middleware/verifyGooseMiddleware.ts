@@ -8,23 +8,25 @@ import { eq } from 'drizzle-orm';
 export const verifyGooseMiddleware = createMiddleware(async (c, next) => {
   const idParam = c.req.param('id')
   if (idParam === undefined) {
-    return c.text('ID is required.');
+    return c.text('ID is required.', 400);
   }
 
   const id: number = Number(idParam);
 
-  if (isNaN(id) || id <= 0) {
-    return c.text('Invalid ID. It must be a positive number.');
+  if (Number.isNaN(id) || id <= 0) {
+    return c.text('Invalid ID. It must be a positive number.', 400);
   }
 
   const db = drizzle(c.env.DB);
   const goose = (await db.select().from(schema.geese).where(eq(schema.geese.id, + id)).limit(1))[0];
 
   if (!goose) {
-    return c.json({ message: 'Goose not found' }, 404);
+    return c.json({ message: 'Goose not found' }, 200);
   }
 
   c.set('goose', goose)
 
   await next()
 })
+
+

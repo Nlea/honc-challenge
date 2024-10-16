@@ -38,11 +38,11 @@ export interface WetlandWager {
   id: number;
   name: string;
   kind: string;
-  characteristics: string;
+  characteristics: string | null;
   breadcrumbsWallet: number;
-  favouriteCocktail: string;
-  favouriteSnack: string;
-  luck: number
+  favouriteCocktail: string| null;
+  favouriteSnack: string| null;
+  luck: number;
 
 }
 
@@ -54,7 +54,7 @@ export enum raceTypesEnum {
 
 export interface Race {
   id: number;
-  name: string;
-  type: raceTypesEnum;
-  winner: string
+  name: string | null;
+  type: raceTypesEnum | null;
+  winner: number | null
 }

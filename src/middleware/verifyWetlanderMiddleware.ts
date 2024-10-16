@@ -13,7 +13,7 @@ export const verifyWetlanderMiddleware = createMiddleware(async (c, next) => {
 
   const id: number = Number(idParam);
 
-  if (isNaN(id) || id <= 0) {
+  if (Number.isNaN(id) || id <= 0) {
     return c.text('Invalid ID. It must be a positive number.');
   }
 
@@ -23,6 +23,7 @@ export const verifyWetlanderMiddleware = createMiddleware(async (c, next) => {
   if (!wetlandWager) {
     return c.json({ message: 'Wetland wager not found' }, 404);
   }
+  
 
   c.set('wetlandwager', wetlandWager)
 

@@ -4,7 +4,7 @@ import { drizzle } from 'drizzle-orm/d1';
 import { and, eq } from 'drizzle-orm';
 import * as schema from '../../db'
 import { verifyWetlanderMiddleware } from "../../middleware";
-import { WetlandWager } from "../../types";
+import type { WetlandWager } from "../../types";
 import { json } from "drizzle-orm/pg-core";
 
 
@@ -15,7 +15,7 @@ declare module 'hono' {
   }
 }
 
-wetlandwagers.use("/id/*", verifyWetlanderMiddleware)
+wetlandwagers.use("/:id/*", verifyWetlanderMiddleware)
 
 wetlandwagers.get("/", async (c) =>{
   const db = drizzle(c.env.DB)
@@ -38,9 +38,14 @@ wetlandwagers.post('/', async (c) => {
 
 
   });
-  return c.text("wetlandWager: "+ name + "inserted")
+  return c.text(`wetlandWager: ${name}inserted`, 201)
 }
-) 
+)
+
+wetlandwagers.get("/:id", async (c) => {
+  const wetlanderwager = c.get('wetlandwager')  
+  return c.json(wetlanderwager)
+  })
 
 wetlandwagers.post("/:id/bet", async (c)=>{
   const {raceId, amount, gooseId } = await c.req.json();
@@ -87,12 +92,17 @@ wetlandwagers.post("/:id/bet", async (c)=>{
     })
 
     }
+    await db.update(schema.wetlandWagers).set({breadcrumbsWallet: wetlanderwager.breadcrumbsWallet - amount}).where(eq(schema.wetlandWagers.id, + wetlanderwager.id))
+
+
+    return c.text(`${wetlanderwager.name}has made a bet , wallet: ${[wetlanderwager.breadcrumbsWallet - amount]} breadcrumbs`)
+
 
 
 
   }catch (e){
     console.error(e)
-        return c.text("An error occurred while betting " + e );
+        return c.text(`An error occurred while betting ${e}` );
 
   }
 
@@ -100,7 +110,8 @@ wetlandwagers.post("/:id/bet", async (c)=>{
 
 wetlandwagers.get("/:id/wallet", async (c)=>{
   const wetlanderwager = c.get('wetlandwager')
-  return c.text(wetlanderwager.name +"'s wallet contains: "+ wetlanderwager.breadcrumbsWallet + " breadcrumbs")
+  console.log(wetlanderwager)
+  return c.text(`${wetlanderwager.name}'s wallet contains: ${wetlanderwager.breadcrumbsWallet} breadcrumbs`)
 
 })
 
@@ -114,38 +125,38 @@ wetlandwagers.post("/:id/cheat", async (c)=>{
         performanceindicator !== "style" && 
         performanceindicator !== "precision" && 
         performanceindicator !== "efficiency") {
-        return c.text("Sorry, this performance indicator doesn't exist. Valid training focuses are speed, style, precision, or efficiency.")
+        return c.text("Sorry, this performance indicator doesn't exist. Valid training focuses are speed, style, precision, or efficiency.", 404)
     }
 
 
   try{
     const [goose] = (await db.select(). from(schema.geese).where(eq(schema.geese.id, + gooseId)))
     if(!goose){
-      return c.text("There is no goose matching the id")
+      return c.text("There is no goose matching the id", 404)
     }
 
     const successThreashold = 100 - (10 * wetlanderwager.luck)
+    console.log(`success threashold: ${successThreashold}`)
 
     const randomnumberapi = await fetch("http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100&count=1", {
       method: "GET",
       headers: { "Content-Type": "application/json" }
     })
 
-    const randomnumber = Number(randomnumberapi)
+    const randomNumber = await randomnumberapi.json() as number[]; 
+    console.log(`random number: ${randomNumber}`)
 
-    if(randomnumber < successThreashold){
+    if(randomNumber[0] < successThreashold){
       db.update(schema.wetlandWagers).set({breadcrumbsWallet: wetlanderwager.breadcrumbsWallet -10000}).where(eq(schema.wetlandWagers.id, +wetlanderwager.id))
-      return c.text("Your cunning scheme ruffled a few feathers! You've been caught and now face a 10,000 breadcrumbs penalty.")
+      return c.text("Your cunning scheme ruffled a few feathers! You've been caught and now face a 10,000 breadcrumbs penalty.", 403)
 
-    }else{
+    }
       db.update(schema.geese).set({[performanceindicator]: goose?.[performanceindicator] + 5}).where(eq(schema.geese.id, + gooseId))
       return c.text("With a sly grin and a flick of a feather, you outsmarted the flock—no one at the Gooselympics suspected a thing!", 200)
 
-    }
-
   }catch (e){
     console.error(e)
-        return c.text("An error occurred while cheating " + e );
+        return c.text(`An error occurred while cheating ${e}` );
 
   }
 
@@ -161,18 +172,18 @@ wetlandwagers.post("/:id/bar", async (c)=>{
   try{
     const [goose] = (await db.select(). from(schema.geese).where(eq(schema.geese.id, + gooseId)))
     if(!goose){
-      return c.text("There is no goose matching the id")
+      return c.text("There is no goose matching the id", 404)
     }
 
     db.update(schema.wetlandWagers).set({breadcrumbsWallet: wetlanderwager.breadcrumbsWallet - 100}).where(eq(schema.wetlandWagers.id, +wetlanderwager.id))
     db.update(schema.geese).set({energyLevel: goose.energyLevel + 5}).where(eq(schema.geese.id, +goose.id))
 
 
-    return c.text(wetlanderwager.name + " bought a " + goose.favouriteCocktail + " for " + goose.name)
+    return c.text(`${wetlanderwager.name} bought a ${goose.favouriteCocktail} for ${goose.name}`, 200)
 
   }catch (e){
     console.error(e)
-        return c.text("An error occurred while getting a drink " + e );
+        return c.text(`An error occurred while getting a drink ${e}` );
 
   }
 

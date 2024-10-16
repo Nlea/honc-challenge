@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@cloudflare/d1": "^1.4.1",
+    "@fiberplane/hono-otel": "0.3.1-beta.1",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.32.0",
