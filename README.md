@@ -13,9 +13,9 @@ Visit [Fiberplane's docs](https://fiberplane.com/docs/get-started/) for more inf
 
 
 ## How to win
-- get 7 answers right
-- price: **35 $ Voucher**
-- Refer to the README for setup instructions
+- Get 7 answers right
+- Prize: **$35 Voucher**
+- Refer to this `README` for setup instructions
 - Use this [form](https://forms.gle/HLzabiZcAJqf9T8t8) to submit your answers
 - Deadline: **November 30th, 2024**
 
@@ -24,18 +24,16 @@ Use this form to submit your answers.  and more details on the questions. The ch
 
 ## Setting up the challenge
 1. Clone this repo
-2. Navigate to the repo and open a terminal
-3. Set up the database, by running those commands
- - `npm run db:touch`
- - `npm run db:generate`
- - `npm run db:migrate`
-3. Run the project locally
- - `npm run dev`
-4. Open a second terminal in the same directory
-- `npm run db:seed`
-5. Use the same terminal to start Fiberplane studio
-- `npx @fiberplane/studio`
-6. Fiberplane studio now is running: Naviagte to http://localhost:8788
+1. Navigate to the repo and open a terminal
+1. Install dependencies
+  - `npm install`
+1. Set up and seed the database, by running those commands
+  - `npm run db:setup`
+1. Run the project locally
+  - `npm run dev`
+1. Use another terminal window to start Fiberplane studio in the project root
+  - `npx @fiberplane/studio@latest`
+1. Fiberplane studio now is running! Navigate to http://localhost:8788
 
     You should see something like this: 
 
@@ -48,7 +46,7 @@ Use this form to submit your answers.  and more details on the questions. The ch
 Use this [form](https://forms.gle/HLzabiZcAJqf9T8t8) to submit your answers. The questions are outlined below to make it easier to provide useful code snippets.
 
 ### All about the geese
-![Pippa](/img/pippa.png)
+![Pippa](/img/featured-goose.png)
 
 1. **Which of the Geese is featured in the picture above?** 
 
@@ -57,7 +55,6 @@ Use this [form](https://forms.gle/HLzabiZcAJqf9T8t8) to submit your answers. The
 
 3. `GET http://localhost:8787/api/geese/8`
 Try to retrieve information about the goose with ID 8. **What improvements could be made to the API response?**
-
 
 4. ` POST http://localhost:8787/api/geese`: Try to add a new goose with the following details:
     ```json
@@ -77,7 +74,7 @@ Try to retrieve information about the goose with ID 8. **What improvements could
         "precision": 6.8
     }
     ```
-    **What is the repsonse?**
+    **What is the response?**
 
 
 5. **What do you see in the log from the above request?** (Open the log using the terminal icon in the corner or with the shortcut `g` followed by `l`.)
@@ -118,8 +115,7 @@ Try to retrieve information about the goose with ID 8. **What improvements could
 
     ![Timeline](/img/timeline.png)
  
-
-    Inspect the response headers from the Fetch, **what Cashing behaviour can you observe?**
+    Inspect the response headers from the Fetch, **What caching behaviour can you observe?**
 
 ### Competition time! 
 11. `http://localhost:8787/api/races` **how many races exist?** 
