@@ -16,11 +16,31 @@ Visit [Fiberplane's docs](https://fiberplane.com/docs/get-started/) for more inf
 - Get 7 answers right
 - Prize: **$35 Voucher**
 - Refer to this `README` for setup instructions
-- Use this [form](https://forms.gle/HLzabiZcAJqf9T8t8) to submit your answers
+- Make a post call to this [API](https://fiberplane-quiz.nlea.workers.dev/api/submission) to submit your answers.
+
+`POST https://fiberplane-quiz.nlea.workers.dev/api/submission`
+```json
+{
+  "name": "Honky McGooseface",
+  "email": "goose@pondmail.com",
+  "a1": "Honked during the 100m splash.",
+  "a2": "Ollie cheated!",
+  "a3": "",
+  "a4": "Flapped wings for the relay race.",
+  "a5": "",
+  "a6": "Dropped bread crumbs on the finish line.",
+  "a7": "Got distracted by a fish mid-race.",
+  "a8": "Cheered when the Canadian geese won gold.",
+  "a9": "Gave side-eye to a referee.",
+  "a10": "",
+  "a11": "Protested because Neni got disqualified.",
+  "a12": "Took a victory lap around the pond."
+}
+
+```
+
 - Deadline: **November 30th, 2024**
 
-
-Use this form to submit your answers.  and more details on the questions. The challenge is open until November 30th.
 
 ## Setting up the challenge
 1. Clone this repo
@@ -46,7 +66,7 @@ Use this form to submit your answers.  and more details on the questions. The ch
 Use this [form](https://forms.gle/HLzabiZcAJqf9T8t8) to submit your answers. The questions are outlined below to make it easier to provide useful code snippets.
 
 ### All about the geese
-![Pippa](/img/featured-goose.png)
+![Featured Goose](/img/featured-goose.png)
 
 1. **Which of the Geese is featured in the picture above?** 
 
