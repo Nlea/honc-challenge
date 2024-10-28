@@ -14,7 +14,7 @@ Visit [Fiberplane's docs](https://fiberplane.com/docs/get-started/) for more inf
 
 ## How to win
 - Get 7 answers right
-- Prize: **$35 Voucher**
+- Prize: **$35 Uber Eats Voucher**
 - Refer to this `README` for setup instructions
 - Make a post call to this [API](https://fiberplane-quiz.nlea.workers.dev/api/submission) to submit your answers.
 
@@ -62,8 +62,6 @@ Visit [Fiberplane's docs](https://fiberplane.com/docs/get-started/) for more inf
 **Welcome to the Gooselympics!** :tada: You are now part of the games and have some control at your fingertips to gather information and influence the competition.
 
 ## Questions 
-
-Use this [form](https://forms.gle/HLzabiZcAJqf9T8t8) to submit your answers. The questions are outlined below to make it easier to provide useful code snippets.
 
 ### All about the geese
 ![Featured Goose](/img/featured-goose.png)
