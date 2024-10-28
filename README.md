@@ -14,7 +14,7 @@ Visit [Fiberplane's docs](https://fiberplane.com/docs/get-started/) for more inf
 
 ## How to win
 - Get 7 answers right
-- Prize: **$35 Uber Eats Voucher**
+- Prize: **$35 Amazon Voucher**
 - Refer to this `README` for setup instructions
 - Make a post call to this [API](https://fiberplane-quiz.nlea.workers.dev/api/submission) to submit your answers.
 
