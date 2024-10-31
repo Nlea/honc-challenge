@@ -44,16 +44,16 @@ Visit [Fiberplane's docs](https://fiberplane.com/docs/get-started/) for more inf
 
 ## Setting up the challenge
 1. Clone this repo
-1. Navigate to the repo and open a terminal
-1. Install dependencies
+2. Navigate to the repo and open a terminal
+3. Install dependencies
   - `npm install`
-1. Set up and seed the database, by running those commands
+4. Set up and seed the database, by running those commands
   - `npm run db:setup`
-1. Run the project locally
+5. Run the project locally
   - `npm run dev`
-1. Use another terminal window to start Fiberplane studio in the project root
+6. Use another terminal window to start Fiberplane studio in the project root
   - `npx @fiberplane/studio@latest`
-1. Fiberplane studio now is running! Navigate to http://localhost:8788
+7. Fiberplane studio now is running! Navigate to http://localhost:8788
 
     You should see something like this: 
 
